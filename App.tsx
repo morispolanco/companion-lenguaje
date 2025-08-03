@@ -1,26 +1,20 @@
 
-import React from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import { ProgressProvider } from './components/ProgressProvider';
-import Layout from './components/Layout';
+import React, { useState } from 'react';
+import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
-import ModuleView from './components/ModuleView';
-import AIAssistant from './components/AIAssistant';
+import { MODULES } from './constants';
 
-function App() {
+const App: React.FC = () => {
+  const [selectedModuleId, setSelectedModuleId] = useState<string>('intro');
+
+  const selectedModule = MODULES.find(m => m.id === selectedModuleId);
+
   return (
-    <ProgressProvider>
-      <HashRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/module/:moduleId" element={<ModuleView />} />
-          </Routes>
-          <AIAssistant />
-        </Layout>
-      </HashRouter>
-    </ProgressProvider>
+    <div className="flex h-screen bg-slate-50 text-slate-800">
+      <Sidebar selectedModuleId={selectedModuleId} onSelectModule={setSelectedModuleId} />
+      <Dashboard module={selectedModule} />
+    </div>
   );
-}
+};
 
 export default App;
